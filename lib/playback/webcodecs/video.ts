@@ -45,7 +45,7 @@ export class Renderer {
 	#start(controller: TransformStreamDefaultController<VideoFrame>) {
 		this.#decoder = new VideoDecoder({
 			output: (frame: VideoFrame) => {
-				this.#outpubFrameNum++
+				this.#outputFrameNum++
 				console.log("output", this.#outputFrameNum)
 				controller.enqueue(frame)
 			},
@@ -76,7 +76,7 @@ export class Renderer {
 				// optimizeForLatency: true
 			})
 		}
-			this.#inpubFrameNum++
+			this.#inputFrameNum++
 			console.log("input", this.#inputFrameNum)
 
 		const chunk = new EncodedVideoChunk({
