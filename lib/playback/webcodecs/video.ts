@@ -8,6 +8,8 @@ export class Renderer {
 
 	#decoder!: VideoDecoder
 	#queue: TransformStream<Frame, VideoFrame>
+	#inputFrameNum :number
+	#outputFrameNum: number
 
 	constructor(config: Message.ConfigVideo, timeline: Component) {
 		this.#canvas = config.canvas
@@ -43,6 +45,8 @@ export class Renderer {
 	#start(controller: TransformStreamDefaultController<VideoFrame>) {
 		this.#decoder = new VideoDecoder({
 			output: (frame: VideoFrame) => {
+				this.#outpubFrameNum++
+				console.log("output", this.#outputFrameNum)
 				controller.enqueue(frame)
 			},
 			error: console.error,
@@ -72,6 +76,8 @@ export class Renderer {
 				// optimizeForLatency: true
 			})
 		}
+			this.#inpubFrameNum++
+			console.log("input", this.#inputFrameNum)
 
 		const chunk = new EncodedVideoChunk({
 			type: frame.sample.is_sync ? "key" : "delta",
